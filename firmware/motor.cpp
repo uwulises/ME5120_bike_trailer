@@ -56,6 +56,18 @@ void motor_cmd_vel(float vx, float vy)
   // move the motors
   digitalWrite(DIR_A, dir_a);
   digitalWrite(DIR_B, dir_b);
+  // Set the speed of the motors using a ramp function from the minimum speed to the value of pwm calculated above
+  for (int i = MIN_SPEED_PWM; i <= vx_pwm; i=i*10)
+  {
+    analogWrite(PWM_A, i);
+    delay(10);
+  }
+  for (int i = MIN_SPEED_PWM; i <= vy_pwm; i=i*10)
+  {
+    analogWrite(PWM_B, i);
+    delay(10);
+  }
+  
   analogWrite(PWM_A, vx_pwm);
   analogWrite(PWM_B, vy_pwm);
   Serial.print("vx_pwm: ");
