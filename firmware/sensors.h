@@ -7,8 +7,6 @@
 #define DOUT_PIN 20
 #define SCK_PIN 21
 
-
-
 void sensors_setup(void);
 float read_load_cell(void);
 
