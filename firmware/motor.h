@@ -9,8 +9,11 @@
 #define PWM_B 5
 #define DIR_B 6
 
-#define MIN_SPEED 60
-#define MAX_SPEED 140
+#define MIN_SPEED_PWM 60
+#define MAX_SPEED_PWM 140
+#define MIN_SPEED 0.1
+//securing the maximum speed to 1 m/s
+#define MAX_SPEED 1
 
 
 void motors_setup(void);
