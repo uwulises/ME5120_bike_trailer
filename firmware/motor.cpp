@@ -13,7 +13,7 @@ void motors_setup(void)
 }
 
 
-// cmd_vel function that takes two floats as arguments of mecanum wheeled robot
+// cmd_vel function that takes two floats as arguments
 void motor_cmd_vel(float vx, float vy)
 {
   Serial.println("CMDVEL");
