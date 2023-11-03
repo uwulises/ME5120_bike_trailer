@@ -1,5 +1,9 @@
 #include "sensors.h"
-
+float tara = 0.0;
+long load_cell_reading = 0.0;
+float load_cell_value = 0.0;
+// objeto celda
+HX711 celda;
 void sensors_setup(void)
 {
     celda.begin(DOUT_PIN, SCK_PIN);
@@ -22,8 +26,8 @@ void sensors_setup(void)
 
 float read_load_cell(void)
 {
-    load_cell_reading = 16.00*(celda.read_average(5)+tara)/147768.00;
-    //convert long to float load cell reading
+    load_cell_reading = 16.00 * (celda.read_average(5) + tara) / 147768.00;
+    // convert long to float load cell reading
     load_cell_value = (float)load_cell_reading;
 
     return load_cell_value;
