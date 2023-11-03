@@ -3,6 +3,12 @@
 
 int vx_pwm = 0;
 int vy_pwm = 0;
+float vx_abs = 0.0;
+float vy_abs = 0.0;
+float max_speed = MAX_SPEED;
+float min_speed = MIN_SPEED;
+bool dir_a = HIGH;
+bool dir_b = HIGH;
 void motors_setup(void)
 {
   pinMode(PWM_A, OUTPUT);
@@ -23,46 +29,30 @@ void motor_cmd_vel(float vx, float vy)
   Serial.print("vy: ");
   Serial.println(vy);
   // take the direction of the motors from the sign of vx and vy
-  int dir_a = (vx >= 0) ? HIGH : LOW;
-  int dir_b = (vy >= 0) ? HIGH : LOW;
+  dir_a = (vx >= 0) ? HIGH : LOW;
+  dir_b = (vy >= 0) ? HIGH : LOW;
   // take absolute value of vx and vy
-  vx = abs(vx);
-  vy = abs(vy);
-  Serial.print("vx abs: ");
-  Serial.println(vx);
-  Serial.print("vy abs: ");
-  Serial.println(vy);
-  // if vx and vy are smaller than the minimum speed, set them to 0
-  if (vx < MIN_SPEED)
+  vx_abs = abs(vx);
+  vy_abs = abs(vy);
+  //check if the speed is out of range
+  if (vx_abs > max_speed)
   {
-    vx = 0;
-    vx_pwm = 0;
+    vx_abs = max_speed;
   }
-  if (vy < MIN_SPEED)
+  if (vy_abs > max_speed)
   {
-    vy = 0;
-    vy_pwm = 0;
+    vy_abs = max_speed;
   }
-  // if vx and vy are bigger than the maximum speed, set them to the maximum speed
-  if (vx > MAX_SPEED)
+  //map the speed to the pwm range
+  if (vx_abs >= min_speed && vx_abs <= max_speed)
   {
-    vx = MAX_SPEED;
+    vx_pwm = (int)(MAX_SPEED_PWM-MIN_SPEED_PWM)/(max_speed-min_speed)*(vx_abs-min_speed)+MIN_SPEED_PWM;
   }
-  if (vy > MAX_SPEED)
+  if (vy_abs >= min_speed && vy_abs <= max_speed)
   {
-    vy = MAX_SPEED;
+    vy_pwm = (int)(MAX_SPEED_PWM-MIN_SPEED_PWM)/(max_speed-min_speed)*(vy_abs-min_speed)+MIN_SPEED_PWM;
   }
-  // call map only if vx and vy are not 0
-  if (vx > 0)
-  {
-    // map the vx and vy values to the PWM values
-    vx_pwm = map(vx, MIN_SPEED, MAX_SPEED, MIN_SPEED_PWM, MAX_SPEED_PWM);
-  }
-  if (vy > 0)
-  {
-    vy_pwm = map(vy, MIN_SPEED, MAX_SPEED, MIN_SPEED_PWM, MAX_SPEED_PWM);
-  }
-
+  
   // move the motors
   digitalWrite(DIR_A, dir_a);
   digitalWrite(DIR_B, dir_b);
