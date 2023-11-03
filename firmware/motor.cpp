@@ -1,5 +1,4 @@
 #include "motor.h"
-#include "sensors.h"
 
 int vx_pwm = 0;
 int vy_pwm = 0;

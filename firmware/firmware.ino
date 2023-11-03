@@ -1,5 +1,5 @@
 #include "motor.h"
-
+#include "sensors.h"
 String inputString = "";
 bool stringComplete = false;
 
